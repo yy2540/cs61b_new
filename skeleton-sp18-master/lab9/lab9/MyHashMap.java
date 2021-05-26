@@ -12,7 +12,7 @@ import java.util.Set;
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private static final int DEFAULT_SIZE = 16;
-    private static final double MAX_LF = 0.75;
+    private static final double MAX_LF = 0.75;  // maximum load factor
 
     private ArrayMap<K, V>[] buckets;
     private int size;
@@ -23,6 +23,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     public MyHashMap() {
         buckets = new ArrayMap[DEFAULT_SIZE];
+        this.clear();
+    }
+
+    public MyHashMap(int capacity) {
+        buckets = new ArrayMap[capacity];
         this.clear();
     }
 
@@ -53,19 +58,44 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        if (key == null){   // can not find value with such key
+            throw new IllegalArgumentException("argument to get() is null");
+        }
+        int i = hash(key);  // computes the hash function of the given key
+        return buckets[i].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (key == null){
+            throw new IllegalArgumentException("first argument to put() is null");
+        }
+        if (loadFactor() > MAX_LF){
+            resize(2 * buckets.length);
+        }
+        int i = hash(key);
+        if (!buckets[i].containsKey(key)){
+            size++;
+            buckets[i].put(key,value);
+        }
+    }
+
+    private void resize(int capacity) {
+        MyHashMap<K, V> mhm = new MyHashMap<>(capacity);
+        for (int i = 0; i < buckets.length; i++) {
+            for (K key : buckets[i].keySet()) {
+                mhm.put(key, buckets[i].get(key));
+            }
+        }
+        this.size = mhm.size;
+        this.buckets = mhm.buckets;
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////

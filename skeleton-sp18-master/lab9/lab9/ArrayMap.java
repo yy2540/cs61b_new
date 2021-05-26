@@ -21,7 +21,7 @@ public class ArrayMap<K, V> implements Map61B<K, V> {
 
     /** Returns the index of the given key if it exists,
      *  -1 otherwise. */
-    private int keyIndex(K key) {
+    public int keyIndex(K key) {
         for (int i = 0; i < size; i += 1) {
             if (keys[i].equals(key)) {
                 return i;
@@ -57,7 +57,7 @@ public class ArrayMap<K, V> implements Map61B<K, V> {
         values[index] = value;
     }
 
-    private void resize(int capacity) {
+    public void resize(int capacity) {
         K[] newKeys = (K[]) new Object[capacity];
         V[] newValues = (V[]) new Object[capacity];
         System.arraycopy(keys, 0, newKeys, 0, size);
