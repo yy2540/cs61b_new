@@ -1,6 +1,7 @@
 package byog.TileEngine;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import byog.Core.RandomUtils;
  * The TETile object is used to represent a single tile in your game. A 2D array of tiles make up a
  * board, and can be drawn to the screen using the TERenderer class.
  *
- * All TETile objects must have a character, textcolor, and background color to be used to represent
+ * All TETile objects must have a textcolor, character, and background color to be used to represent
  * the tile when drawn to the screen. You can also optionally provide a path to an image file of an
  * appropriate size (16x16) to be drawn in place of the unicode representation. If the image path
  * provided cannot be found, draw will fallback to using the provided character and color
@@ -21,7 +22,9 @@ import byog.Core.RandomUtils;
  * to make your TETile class mutable, if you prefer.
  */
 
-public class TETile {
+public class TETile implements Serializable{
+    private static final long serialVersionUID = 1L;
+
     private final char character; // Do not rename character or the autograder will break.
     private final Color textColor;
     private final Color backgroundColor;
